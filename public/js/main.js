@@ -20449,52 +20449,120 @@ module.exports = require('./lib/React');
 
 },{"./lib/React":155}],178:[function(require,module,exports){
 var React = require('react');
-var ListItem = require('./ListItem.jsx');
+var InputField = require('./InputField.jsx');
+var marginFix = {
+	marginTop: 12
+};
+var marginRight = {
+	marginRight: 4
+};
+var Calculator = React.createClass({
+	displayName: 'Calculator',
 
-var ingredients = [{ "id": 1, "text": "ham" }, { "id": 2, "text": "cheese" }, { "id": 3, "text": "bread" }];
-var List = React.createClass({
-	displayName: 'List',
-
+	addition: function () {
+		var result = parseInt(this.refs.iF1.state.value) + parseInt(this.refs.iF2.state.value);
+		document.getElementById("opResult").innerHTML = result;
+	},
+	substraction: function () {
+		var result = parseInt(this.refs.iF1.state.value) - parseInt(this.refs.iF2.state.value);
+		document.getElementById("opResult").innerHTML = result;
+	},
+	multiplication: function () {
+		var result = parseInt(this.refs.iF1.state.value) * parseInt(this.refs.iF2.state.value);
+		document.getElementById("opResult").innerHTML = result;
+	},
+	division: function () {
+		var result = parseInt(this.refs.iF1.state.value) / parseInt(this.refs.iF2.state.value);
+		document.getElementById("opResult").innerHTML = result;
+	},
+	clearFields: function () {
+		this.refs.iF1.clear();
+		this.refs.iF2.clear();
+		document.getElementById("opResult").innerHTML = "";
+	},
 	render: function () {
-		var listItems = ingredients.map(function (item) {
-			return React.createElement(ListItem, { key: item.id, ingredient: item.text });
-		});
-
 		return React.createElement(
-			'ul',
-			null,
-			listItems
-		);
-	}
-});
-
-module.exports = List;
-
-},{"./ListItem.jsx":179,"react":177}],179:[function(require,module,exports){
-var React = require('react');
-var ListItem = React.createClass({
-	displayName: 'ListItem',
-
-	render: function () {
-		return React.createElement(
-			'li',
-			null,
+			'div',
+			{ className: 'panel panel-default col-sm-6' },
 			React.createElement(
-				'h4',
-				null,
-				this.props.ingredient
+				'div',
+				{ className: 'panel-body' },
+				React.createElement(
+					'h1',
+					{ className: 'text-center' },
+					'Simple Calculator'
+				),
+				React.createElement(InputField, { ref: 'iF1' }),
+				React.createElement(InputField, { ref: 'iF2' }),
+				React.createElement(
+					'button',
+					{ style: marginRight, className: 'btn btn-primary', onClick: this.addition },
+					'Add'
+				),
+				React.createElement(
+					'button',
+					{ style: marginRight, className: 'btn btn-primary', onClick: this.substraction },
+					'Substract'
+				),
+				React.createElement(
+					'button',
+					{ style: marginRight, className: 'btn btn-primary', onClick: this.multiplication },
+					'Multiply'
+				),
+				React.createElement(
+					'button',
+					{ style: marginRight, className: 'btn btn-primary', onClick: this.division },
+					'Divide'
+				),
+				React.createElement(
+					'div',
+					{ style: marginFix, className: 'row form-group' },
+					React.createElement('p', { className: 'form-control col-sm-9', id: 'opResult' }),
+					React.createElement(
+						'button',
+						{ className: 'btn btn-danger col-sm-3', onClick: this.clearFields },
+						'Clear'
+					)
+				)
 			)
 		);
 	}
 });
 
-module.exports = ListItem;
+module.exports = Calculator;
+
+},{"./InputField.jsx":179,"react":177}],179:[function(require,module,exports){
+var React = require('react');
+
+var InputField = React.createClass({
+	displayName: "InputField",
+
+	getInitialState: function () {
+		return { value: "" };
+	},
+	onChange: function (e) {
+		var val = e.target.value;
+		this.setState({ value: val });
+	},
+	clear: function () {
+		this.setState({ value: "" });
+	},
+	render: function () {
+		return React.createElement(
+			"div",
+			{ className: "form-group col-sm-6" },
+			React.createElement("input", { type: "text", className: "form-control", placeholder: "NUMBER", value: this.state.value, onChange: this.onChange })
+		);
+	}
+});
+
+module.exports = InputField;
 
 },{"react":177}],180:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
-var List = require('./components/List.jsx');
+var Calculator = require('./components/Calculator.jsx');
 
-ReactDOM.render(React.createElement(List, null), document.getElementById('ingredients'));
+ReactDOM.render(React.createElement(Calculator, null), document.getElementById('app'));
 
-},{"./components/List.jsx":178,"react":177,"react-dom":26}]},{},[180]);
+},{"./components/Calculator.jsx":178,"react":177,"react-dom":26}]},{},[180]);
